@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+
+{% block content %}
+<!-- Heading Row -->
+<div class="row align-items-center my-5">
+    <!-- Personal info Chart -->
+        
+
+        <!-- Photo Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Фото для поиска</h6>
+                    
+                </div>
+                <!-- Card Body -->
+                <div class="card-body" >
+                    <div class="chart-pie pt-4 pb-2">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class="d-flex justify-content-center">
+                                    {% if founded_faces%}
+                                        <img id="card-image" class="chartjs-render-monitor border" style="display: block; width: 267px; height: 275px;" src="{{ url_for('static', path=founded_faces[5]) }}" class="img-fluid" alt="Responsive image">
+                                    {% elif not_founded %}
+                                    <img id="card-image" class="chartjs-render-monitor border" style="display: block; width: 267px; height: 275px;" src="{{ url_for('static', path=not_founded[1]) }}" class="img-fluid" alt="Responsive image">
+                                    {% else %}
+                                        <img id="card-image" class="chartjs-render-monitor border" style="display: block; width: 267px; height: 275px;" src={{ url_for('static', path='img/empty_photo.jpg') }} class="img-fluid" alt="Responsive image">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class="">
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Фото
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Table Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Найденное лицо</h6>
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <div class="chart-area" style="display: block; width: 601px; height: 350px;" width="601" height="350">
+                        <h1 class="font-weight-light"><p></p></h1>
+                        {% if founded_faces %}
+                        <div class="card mb-4" style="max-width: 540px;">
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img src="{{ url_for('static', path=founded_faces[4]) }}" class="card-img-top" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Ф.И.О: {{founded_faces[1]}} {{founded_faces[2]}}</h5>
+                                    <p class="card-text">Дата рождения: {{founded_faces[6]}}</p>
+                                    <p class="card-text">Расстояние: {{founded_faces[3]}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% elif not_founded %}
+                        <div class="card mb-4" style="max-width: 620px;">
+                            <h5 id="cardTitle" class="card-title">{{not_founded[0]}}</h5>
+                        </div>
+                        {% else %}
+                        <div class="card mb-4" style="max-width: 620px;">
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img src={{ url_for('static', path='img/person_img.png') }} class="card-img-top" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 id="cardTitle" class="card-title">Имя Фамилия</h5>
+                                    <p class="card-text">Информация о роспознавании</p>
+                                    <p class="card-text"><small class="text-muted"></small></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        
+                        {% endif %}
+                            
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+</div>
+<!-- /.row -->
+
+<!-- Call to Action Well -->
+<div class="card text-white bg-secondary my-5 py-4 text-center">
+    <div class="card-body">
+    <p class="text-white m-0">
+        <form action="/uploadfile/" enctype="multipart/form-data" method="post">
+            <input class="btn btn-primary" value="Выбрать файл" name="file" type="file" multiple>
+            <input onclick="showDiv()" class="btn btn-primary" value="Найти лица" type="submit" >
+            
+            <div class="d-flex justify-content-center pt-2" >
+                <div id="spinner" class="spinner-border" role="status" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+</div>
+
+
+</div>
+<!-- /.container -->
+{% endblock %}
+
+{% block js_scripts %}
+{{ super() }}
+<script src={{ url_for('static', path="/js/plyr.js") }}></script> 
+<!-- /.<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+<script src={{ url_for('static', path="/js/videojs-time-offset.min.js") }}></script>-->
+<script>
+
+    function showDiv() {
+        document.getElementById('spinner').style.display = "block";
+    }
+
+    const player = new Plyr('#player');
+
+    player.once('canplay', event => {
+        player.currentTime = 10;
+    });
+
+    jQuery(document).ready(function($) {
+        var row_id;
+        var firstname;
+        $(".clickable-row").click(function() {
+            var $row = $(this).closest("tr"),        // Finds the closest row <tr> 
+            $tds = $row.children() // Finds the 2nd <td> element
+
+            
+            $.each($tds, function(index) {     
+                if (index == 0){
+                    row_id = $(this).text()
+                }           // Visits every single <td> element
+                
+                if (index == 5){
+                    var base_string = $(this).text()
+                    //base_string = base_string.substring(2,base_string.length - 1)
+                    
+                    $("#card-image").attr('src', "data:image/png;base64,"+base_string)
+                    //console.log(index + ": " + $(this).text());         // Prints out the text within the <td>
+                }
+                if (index == 6){
+                    var time =  parseFloat($(this).text())/1000
+                    player.currentTime = time
+                }
+            });
+        });
+    });
+
+</script>
+{% endblock %}
+
+

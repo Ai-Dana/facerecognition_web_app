@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Personal info Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Персональные данные</h6>
+                    
+                </div>
+                <!-- Card Body -->
+                <div class="card-body d-flex justify-content-center">
+                    <div class="chart-area" style="display: block; width: 601px; height: 350px;" width="601" height="350">
+                        <form action="/personinfo/" enctype="multipart/form-data" method="post">
+                            <div class="form-group row d-flex justify-content-center">
+                                <label for="inputFirstname" class="col-sm-2 col-form-label">Имя</label>
+                                <div class="col-sm-10 col-xl-8 col-lg-7">
+                                    <input name="firstname" disabled type="text" class="form-control" id="inputFirstname" placeholder="Имя">
+                                </div>
+                            </div>
+                            <div class="form-group row d-flex justify-content-center">
+                                <label for="inputLastname" class="col-sm-2 col-form-label">Фамилия</label>
+                                <div class="col-sm-10 col-xl-8 col-lg-7">
+                                    <input name="lastname" disabled type="text" class="form-control" id="inputLastname" placeholder="Фамилия">
+                                </div>
+                            </div>
+                            <div class="form-group row d-flex justify-content-center">
+                                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10 col-xl-8 col-lg-7">
+                                    <input name="email" disabled type="text" class="form-control" id="staticEmail" value="email@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group row d-flex justify-content-center">
+                                <label for="inputBirthdate" class="col-sm-2 col-form-label">Дата рождения</label>
+                                <div class="col-sm-10 col-xl-8 col-lg-7">
+                                    <input name="birthdate" disabled type="date" class="form-control" id="inputBirthdate">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row d-flex justify-content-center">
+                                <input id="add-photo" class="btn btn-outline-secondary mr-2" value="Добавить фото паспорта" name="photos" type="file" multiple disabled>
+                            </div>
+                            <div class="form-group row d-flex justify-content-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button id="new-person" type="button" class="btn btn-outline-primary mr-2">Добавить нового</button>
+                                    <button id="change-data" type="button" class="btn btn-outline-secondary mr-2" disabled>Изменить данные</button>
+                                    <button id="save-data" type="submit" class="btn btn-outline-secondary mr-2" disabled>Сохранить</button>
+                                    <button id="cancel" type="button" class="btn btn-outline-secondary mr-2" disabled>Отменить</button>
+                                    <button id="delete" type="button" class="btn btn-outline-secondary mr-2" disabled>Удалить</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Фото</h6>
+                    
+                </div>
+                <!-- Card Body -->
+                <div class="card-body" >
+                    <div class="chart-pie pt-4 pb-2">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class="d-flex justify-content-center">
+                                    <img id="card-image" class="chartjs-render-monitor border" style="display: block; width: 267px; height: 275px;" src={{ url_for('static', path='img/empty_photo.jpg') }} class="img-fluid" alt="Responsive image">
+                                </div>
+                            </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class="">
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Фото
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Table Chart -->
+        <div class="col-xl-12 col-lg-1">
+            <div class="card shadow mb-8">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Данные на базе</h6>
+                </div>
+                <div class="card-body" >
+                    <div class="chart-area" style="display: block;">
+                        <table class="table sortable" >
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Фамилия</th>
+                                <th scope="col">Дата рождения</th>
+                                <th scope="col">Дата добавления в базу</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in data %}
+                                    <tr class='clickable-row' data-href='url://' >
+                                        <th scope="row">{{ row[0] }}</th>
+                                        <td>{{ row[1] }}</td>
+                                        <td>{{ row[2] }}</td>
+                                        <td>{{ row[3] }}</td>
+                                        <td>{{ row[4] }}</td>
+                                        <td>{{ row[5] }}</td>
+                                        <td style="display:none">{{ row[6] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_scripts %}
+    {{ super() }}
+
+    <script>
+        jQuery(document).ready(function($) {
+            var row_id;
+            var firstname;
+            $(".clickable-row").click(function() {
+                var $row = $(this).closest("tr"),        // Finds the closest row <tr> 
+                $tds = $row.children() // Finds the 2nd <td> element
+                $("#delete").attr("disabled", false);
+                $("#delete").attr("class", "btn btn-outline-danger mr-2")
+
+                $("#change-data").attr("disabled", false);
+                $("#change-data").attr("class", "btn btn-outline-primary mr-2")
+
+                
+                $.each($tds, function(index) {     
+                    if (index == 0){
+                        row_id = $(this).text()
+                    }           // Visits every single <td> element
+                    if (index == 1){
+                        firstname = $(this).text()
+                        $("#inputFirstname").val(firstname);
+                        console.log(index + ": " + $(this).text());         // Prints out the text within the <td>
+                    }
+                    if (index == 2){
+                        $("#inputLastname").val($(this).text());
+                        console.log(index + ": " + $(this).text());         // Prints out the text within the <td>
+                    }
+                    if (index == 6){
+                        var base_string = $(this).text()
+                        base_string = base_string.substring(2,base_string.length - 1)
+                        
+                        $("#card-image").attr('src', "data:image/png;base64,"+base_string)
+                        //console.log(index + ": " + $(this).text());         // Prints out the text within the <td>
+                    }
+                    
+                });
+            });
+
+            $("#new-person").click(function() {
+                $("#change-data").attr("disabled", true);
+
+                
+                $("#add-photo").attr("disabled", false);
+                $("#add-photo").attr("class", "btn btn-outline-primary mr-2")
+
+                $("#save-data").attr("disabled", false);
+                $("#save-data").attr("class", "btn btn-outline-success mr-2")
+
+                $("#cancel").attr("disabled", false);
+                $("#cancel").attr("class", "btn btn-outline-danger mr-2")
+                
+                $("#inputFirstname").attr("disabled", false);
+                $("#inputLastname").attr("disabled", false);
+                $("#staticEmail").attr("disabled", false);
+                $("#inputBirthdate").attr("disabled", false);
+            });
+
+            $("#delete").click(function(){
+                var user = $('#inputUsername').val();
+                var pass = $('#inputPassword').val();
+                console.log(row_id)
+
+                var form = new FormData();
+                form.append("user_id", row_id);
+                form.append("username", firstname);
+
+                $.ajax({
+                    url: '/delete_person/',
+                    crossDomain: true,
+                    method: 'POST',
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    processData: false,
+                    data: form,
+                    dataType: "json",
+                    success: function(data) {
+                        console.log(data);
+                        location.reload(true);
+                    }
+                    
+                });
+
+                
+                
+                
+            });
+
+        });
+    </script>
+{% endblock %}
