@@ -1,6 +1,0 @@
-Collecting opencv-python
-  Downloading opencv_python-4.5.5.62-cp36-abi3-win_amd64.whl (35.4 MB)
-Collecting numpy>=1.13.3
-  Downloading numpy-1.19.5-cp36-cp36m-win_amd64.whl (13.2 MB)
-Installing collected packages: numpy, opencv-python
-Successfully installed numpy-1.19.5 opencv-python-4.5.5.62
