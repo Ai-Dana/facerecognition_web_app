@@ -1,0 +1,15 @@
+2022-03-04 13:17:11,189 - INFO - Started server process [12152]
+2022-03-04 13:17:11,192 - INFO - Waiting for application startup.
+2022-03-04 13:17:11,192 - INFO - Application startup complete.
+2022-03-04 13:17:43,375 - DEBUG - ('BEGIN', None)
+2022-03-04 13:17:43,376 - DEBUG - ('CREATE TABLE IF NOT EXISTS "user" ("id" INTEGER NOT NULL PRIMARY KEY, "first_name" VARCHAR(255) NOT NULL, "last_name" VARCHAR(255) NOT NULL, "birthdate" DATETIME NOT NULL, "record_date" DATETIME NOT NULL, "image_name" VARCHAR(255) NOT NULL, "image_blob" BLOB NOT NULL)', [])
+2022-03-04 13:17:43,376 - DEBUG - ('CREATE UNIQUE INDEX IF NOT EXISTS "user_image_name" ON "user" ("image_name")', [])
+2022-03-04 13:17:43,377 - DEBUG - ('CREATE UNIQUE INDEX IF NOT EXISTS "user_image_blob" ON "user" ("image_blob")', [])
+2022-03-04 13:17:43,378 - DEBUG - ('CREATE TABLE IF NOT EXISTS "user_face" ("id" INTEGER NOT NULL PRIMARY KEY, "user_id" INTEGER NOT NULL, "model_name" VARCHAR(255) NOT NULL, "metric_name" VARCHAR(255) NOT NULL, "detectot_backend_name" VARCHAR(255) NOT NULL, "confidence" REAL NOT NULL, "image_path" TEXT NOT NULL, "image_blob" BLOB NOT NULL, FOREIGN KEY ("user_id") REFERENCES "user" ("id"))', [])
+2022-03-04 13:17:43,378 - DEBUG - ('CREATE INDEX IF NOT EXISTS "user_face_user_id" ON "user_face" ("user_id")', [])
+2022-03-04 13:17:43,378 - DEBUG - ('CREATE UNIQUE INDEX IF NOT EXISTS "user_face_image_blob" ON "user_face" ("image_blob")', [])
+2022-03-04 13:17:43,380 - DEBUG - ('SELECT "t1"."id", "t1"."first_name", "t1"."last_name", "t1"."birthdate", "t1"."record_date", "t1"."image_name", "t1"."image_blob" FROM "user" AS "t1"', [])
+2022-03-04 13:21:08,104 - INFO - Shutting down
+2022-03-04 13:21:08,211 - INFO - Waiting for application shutdown.
+2022-03-04 13:21:08,211 - INFO - Application shutdown complete.
+2022-03-04 13:21:08,212 - INFO - Finished server process [12152]
